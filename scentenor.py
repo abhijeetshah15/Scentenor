@@ -119,18 +119,17 @@ with st.container():
         if len(perfume_list) > 0 and event:
             # Formulate the ChatGPT query
             message = f"""
-            I have these perfumes: {', '.join(perfume_list)}. 
-            I am going to {event}. The weather in {city} is {weather_desc} ({temp}°C, {humidity}% humidity).
-            Recommend a perfume from the list based on the following:
-            - Weather: adjust for temperature and humidity.
-            - Event type: consider the formality or setting.
+            My shop has these perfumes: {', '.join(perfume_list)}. 
+            I want to recommend perfume to a customer going to {event}. The weather in {city} is {weather_desc} ({temp}°C, {humidity}% humidity).
+            Recommend perfumes from the list based on the following:
+            - (Optional) Weather: adjust for temperature and humidity.
+            - (Optional) Event type: consider the formality or setting.
             - Fragrance Type (optional): {fragrance_type if fragrance_type != "None" else "No specific fragrance type"}.
             - Age Group (optional): {age_group if age_group else "No specific age group"}.
 
             Carefully analyze the list and avoid random suggestions. Include:
-            1. The recommended perfume name.
+            1. The recommended perfumes list.
             2. A brief reason for the choice.
-            3. Application tips (e.g., pulse points, layering advice).
             """
             # ChatGPT API Call
             client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -138,12 +137,12 @@ with st.container():
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": """
-                    You are a professional perfume consultant. Your job is to analyze the provided list of perfumes and carefully recommend the most suitable perfume based on:
-                    - Weather conditions (temperature, humidity, general description).
-                    - Event type (formal, casual, outdoor, etc.).
+                    You are a professional perfume consultant. Your job is to analyze the provided list of perfumes and carefully recommend the suitable list of perfumes based on:
+                    - Optional Weather conditions (temperature, humidity, general description).
+                    - Optional Event type (formal, casual, outdoor, etc.).
                     - Optional fragrance type preference.
                     - Optional age group.
-                    Avoid random recommendations and give thoughtful, tailored advice. Include brief explanations and application tips.
+                    Avoid random recommendations and give thoughtful, tailored list.
                     """},
                     {"role": "user", "content": message}
                 ]
